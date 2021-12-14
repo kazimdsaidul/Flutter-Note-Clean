@@ -17,6 +17,7 @@ import 'feature/data/remote/data_sources/firebase_remote_data_source.dart';
 import 'feature/data/repositories/firbase_repogitory_impl.dart';
 import 'feature/domain/use_cases/get_create_current_user_usecase.dart';
 import 'feature/domain/use_cases/sing_in_usecase.dart';
+import 'feature/domain/use_cases/sing_out_usecase.dart';
 import 'feature/domain/use_cases/update_note_usecase.dart';
 
 GetIt sl = GetIt.instance;
@@ -50,12 +51,12 @@ Future<void> init() async {
       () => GetCurrentUidUseCase(repository: sl.call()));
   sl.registerLazySingleton<SignUPUseCase>(
       () => SignUPUseCase(repository: sl.call()));
+  sl.registerLazySingleton<SignOutUseCase>(
+      () => SignOutUseCase(repository: sl.call()));
   sl.registerLazySingleton<SignInUseCase>(
-      () => SignInUseCase(repository: sl.call()));
+          () => SignInUseCase(repository: sl.call()));
   sl.registerLazySingleton<IsSignInUseCase>(
       () => IsSignInUseCase(repository: sl.call()));
-  sl.registerLazySingleton<GetCurrentUidUseCase>(
-      () => GetCurrentUidUseCase(repository: sl.call()));
   sl.registerLazySingleton<GetCreateCurrentUserUsecase>(
       () => GetCreateCurrentUserUsecase(repository: sl.call()));
 

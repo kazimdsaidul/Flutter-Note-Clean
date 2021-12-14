@@ -29,6 +29,8 @@ apply plugin: 'com.google.gms.google-services'
 android {
     compileSdkVersion 30
 
+    ndkVersion '21.3.6528147'
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -50,6 +52,7 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         multiDexEnabled true
+
     }
 
     buildTypes {
