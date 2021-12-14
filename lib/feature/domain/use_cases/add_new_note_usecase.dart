@@ -4,7 +4,7 @@ import 'package:flutter_note_clean/feature/domain/repositories/firebase_reposito
 class AddNewNoteUseCase {
   final FirebaseRepository repository;
 
-  AddNewNoteUseCase(this.repository);
+  AddNewNoteUseCase({required this.repository});
 
   Future<void> call(NoteEntity note) async {
     return repository.addNewNote(note);

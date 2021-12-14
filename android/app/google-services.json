@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "484914708103",
+    "project_id": "flutter-note-clean",
+    "storage_bucket": "flutter-note-clean.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:484914708103:android:6f9e7464adb571b4810222",
+        "android_client_info": {
+          "package_name": "com.example.flutter_note_clean"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "484914708103-n03q69dnlsngrgr4nvqv1eoi7v56rc29.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBMNf_iM4yYz5BPgS5E53o0I5OIYJRLPzs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "484914708103-n03q69dnlsngrgr4nvqv1eoi7v56rc29.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
