@@ -101,7 +101,8 @@ class _SignInPageState extends State<SignInPage> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.pushNamedAndRemoveUntil(context, PageConst.signUpPage, (route) => false);
+              Navigator.pushNamed((context), PageConst.signUpPage);
+              // Navigator.pushNamedAndRemoveUntil(context, PageConst.signUpPage, (route) => false);
             },
             child: Container(
               height: 45,
