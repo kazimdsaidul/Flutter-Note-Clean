@@ -68,8 +68,7 @@ class _AddNewNotePageState extends State<AddNewNotePage> {
                 width: double.infinity,
                 alignment: Alignment.center,
                 decoration: BoxDecoration(
-                    color: Colors.deepOrange,
-                    borderRadius: BorderRadius.circular(8)),
+                    color: Colors.blue, borderRadius: BorderRadius.circular(8)),
                 child: Text(
                   "Save",
                   style: TextStyle(fontSize: 18, color: Colors.white),

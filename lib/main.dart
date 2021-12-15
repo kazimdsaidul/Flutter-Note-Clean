@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_note_clean/feature/presentation/pages/sing_in_page.dart';
 import 'package:flutter_note_clean/on_generate_route.dart';
+import 'package:flutter_note_clean/theme.dart';
 
 import 'feature/presentation/cubit/auth/auth_cubit.dart';
 import 'feature/presentation/cubit/note/note_cubit.dart';
@@ -30,7 +31,7 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         title: 'My Notes',
         debugShowCheckedModeBanner: false,
-        theme: ThemeData(primarySwatch: Colors.deepOrange),
+        theme: CustomTheme.mainTheme,
         initialRoute: '/',
         onGenerateRoute: OnGenerateRoute.route,
         routes: {
