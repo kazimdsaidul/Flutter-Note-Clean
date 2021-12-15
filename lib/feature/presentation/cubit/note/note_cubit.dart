@@ -12,55 +12,55 @@ part 'note_state.dart';
 
 class NoteCubit extends Cubit<NoteState> {
   final UpdateNoteUseCase updateNoteUseCase;
-  final AddNewNoteUseCase addNewNoteUseCase;
   final DeleteNoteUseCase deleteNoteUseCase;
   final GetNotesUseCase getNotesUseCase;
+  final AddNewNoteUseCase addNewNoteUseCase;
 
   NoteCubit(
-      {required this.updateNoteUseCase,
-      required this.addNewNoteUseCase,
+      {required this.getNotesUseCase,
       required this.deleteNoteUseCase,
-      required this.getNotesUseCase})
+      required this.updateNoteUseCase,
+      required this.addNewNoteUseCase})
       : super(NoteInitial());
 
-  Future<void> addNote({required NoteEntity noteEntity}) async {
+  Future<void> addNote({required NoteEntity note}) async {
     try {
-      await addNewNoteUseCase.call(noteEntity);
+      await addNewNoteUseCase.call(note);
     } on SocketException catch (_) {
-      emit(NoteNoInternetFailure());
+      emit(NoteFailure());
     } catch (_) {
       emit(NoteFailure());
     }
   }
 
-  Future<void> deleteNote({required NoteEntity noteEntity}) async {
+  Future<void> deleteNote({required NoteEntity note}) async {
     try {
-      await deleteNoteUseCase.call(noteEntity);
+      await deleteNoteUseCase.call(note);
     } on SocketException catch (_) {
-      emit(NoteNoInternetFailure());
+      emit(NoteFailure());
     } catch (_) {
       emit(NoteFailure());
     }
   }
 
-  Future<void> updateNoteNote({required NoteEntity noteEntity}) async {
+  Future<void> updateNote({required NoteEntity note}) async {
     try {
-      await updateNoteUseCase.call(noteEntity);
+      await updateNoteUseCase.call(note);
     } on SocketException catch (_) {
-      emit(NoteNoInternetFailure());
+      emit(NoteFailure());
     } catch (_) {
       emit(NoteFailure());
     }
   }
 
-  Future<void> getNoteNotes({required String uid}) async {
+  Future<void> getNotes({required String uid}) async {
     emit(NoteLoading());
     try {
-      getNotesUseCase.call(uid).listen((event) {
-        emit(NoteLoaded(notes: event));
+      getNotesUseCase.call(uid).listen((notes) {
+        emit(NoteLoaded(notes: notes));
       });
     } on SocketException catch (_) {
-      emit(NoteNoInternetFailure());
+      emit(NoteFailure());
     } catch (_) {
       emit(NoteFailure());
     }

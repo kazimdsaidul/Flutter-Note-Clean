@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_note_clean/feature/domain/entities/user_entity.dart';
 import 'package:flutter_note_clean/feature/presentation/cubit/auth/auth_cubit.dart';
 import 'package:flutter_note_clean/feature/presentation/cubit/user/user_cubit.dart';
 
@@ -171,12 +172,14 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   void submitSignIn() {
-    // if (_usernameController.text.isNotEmpty &&_emailController.text.isNotEmpty &&
-    //     _passwordController.text.isNotEmpty) {
-    //   BlocProvider.of<UserCubit>(context).submitSignUp(user: UserEntity(
-    //     email: _emailController.text,
-    //     password: _passwordController.text,
-    //   ));
-    // }
+    if (_usernameController.text.isNotEmpty &&
+        _emailController.text.isNotEmpty &&
+        _passwordController.text.isNotEmpty) {
+      BlocProvider.of<UserCubit>(context).submitSignUp(
+          user: UserEntity(
+        email: _emailController.text,
+        password: _passwordController.text,
+      ));
+    }
   }
 }

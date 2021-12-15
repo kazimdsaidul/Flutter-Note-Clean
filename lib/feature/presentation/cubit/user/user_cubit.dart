@@ -20,10 +20,20 @@ class UserCubit extends Cubit<UserState> {
       required this.signInUseCase})
       : super(UserInitial());
 
-  Future<void> signIn(UserEntity userEntity) async {
+  Future<void> signIn({required UserEntity userEntity}) async {
     emit(UserLoading());
     try {
-      await signInUseCase.call(userEntity);
+      if (userEntity.name?.isEmpty ?? false) {
+        emit(UserValidationError(message: "Invalid user name"));
+        return;
+      }
+
+      if (userEntity.password?.isEmpty ?? false) {
+        emit(UserValidationError(message: "password user name"));
+        return;
+      }
+
+      await signInUseCase.call(user: userEntity);
       emit(UserSuccess());
     } on SocketException catch (_) {
       emit(UserNoInternetConnectionFailure());
@@ -32,11 +42,11 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
-  Future<void> signUp(UserEntity userEntity) async {
+  Future<void> submitSignUp({required UserEntity user}) async {
     emit(UserLoading());
     try {
-      await signUPUseCase.call(userEntity);
-      await getCreateCurrentUserUsecase.call(userEntity);
+      await signUPUseCase.call(user);
+      await getCreateCurrentUserUsecase.call(user);
       emit(UserSuccess());
     } on SocketException catch (_) {
       emit(UserNoInternetConnectionFailure());

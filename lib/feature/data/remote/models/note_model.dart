@@ -7,7 +7,7 @@ class NoteModel extends NoteEntity {
       final String? note,
       final Timestamp? time,
       final String? uid})
-      : super(noteID: noteID, note: note, time: time, uid: uid);
+      : super(noteId: noteID, note: note, time: time, uid: uid);
 
   factory NoteModel.fromSnapshot(DocumentSnapshot documentSnapshot) {
     return NoteModel(
@@ -19,7 +19,7 @@ class NoteModel extends NoteEntity {
 
   Map<String, dynamic> toDocument() {
     return {
-      "noteID": noteID,
+      "noteID": noteId,
       "note": note,
       "time": time,
       "uid": uid,

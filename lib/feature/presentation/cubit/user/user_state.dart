@@ -28,3 +28,12 @@ class UserSuccess extends UserState {
   @override
   List<Object> get props => [];
 }
+
+class UserValidationError extends UserState {
+  final String message;
+
+  UserValidationError({required this.message});
+
+  @override
+  List<Object> get props => [];
+}

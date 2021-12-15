@@ -1,5 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_note_clean/feature/domain/entities/user_entity.dart';
+import 'package:flutter_note_clean/feature/presentation/cubit/auth/auth_cubit.dart';
+import 'package:flutter_note_clean/feature/presentation/cubit/user/user_cubit.dart';
+import 'package:flutter_note_clean/feature/presentation/pages/home_page.dart';
+import 'package:flutter_note_clean/feature/widgets/common.dart';
 
 import '../../../app_const.dart';
 
@@ -7,7 +13,7 @@ class SignInPage extends StatefulWidget {
   const SignInPage({Key? key}) : super(key: key);
 
   @override
-  State<SignInPage> createState() => _SignInPageState();
+  _SignInPageState createState() => _SignInPageState();
 }
 
 class _SignInPageState extends State<SignInPage> {
@@ -18,13 +24,48 @@ class _SignInPageState extends State<SignInPage> {
 
   GlobalKey<ScaffoldState> _scaffoldGlobalKey = GlobalKey<ScaffoldState>();
 
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldGlobalKey,
-      body: _bodyWidget(),
-    );
+        key: _scaffoldGlobalKey,
+        body: BlocConsumer<UserCubit, UserState>(
+          builder: (context, userState) {
+            if (userState is UserSuccess) {
+              return BlocBuilder<AuthCubit, AuthState>(
+                  builder: (context, authState) {
+                if (authState is Authenticated) {
+                  return HomePage(
+                    uid: authState.uid,
+                  );
+                } else {
+                  return _bodyWidget();
+                }
+              });
+            }
+
+            return _bodyWidget();
+          },
+          listener: (context, userState) {
+            if (userState is UserSuccess) {
+              BlocProvider.of<AuthCubit>(context).loggedIn();
+            }
+            if (userState is UserFailure) {
+              snackBarError(
+                  msg: "invalid email", scaffoldState: _scaffoldGlobalKey);
+            }
+            if (userState is UserValidationError) {
+              snackBarError(
+                  msg: userState.message, scaffoldState: _scaffoldGlobalKey);
+            }
+          },
+        ));
   }
 
   _bodyWidget() {
@@ -101,8 +142,8 @@ class _SignInPageState extends State<SignInPage> {
           ),
           GestureDetector(
             onTap: () {
-              Navigator.pushNamed((context), PageConst.signUpPage);
-              // Navigator.pushNamedAndRemoveUntil(context, PageConst.signUpPage, (route) => false);
+              Navigator.pushNamedAndRemoveUntil(
+                  context, PageConst.signUpPage, (route) => false);
             },
             child: Container(
               height: 45,
@@ -129,6 +170,11 @@ class _SignInPageState extends State<SignInPage> {
   }
 
   void submitSignIn() {
-
+    BlocProvider.of<UserCubit>(context).signIn(
+        userEntity: UserEntity(
+      email: _emailController.text,
+      password: _passwordController.text,
+    ));
   }
 }
+

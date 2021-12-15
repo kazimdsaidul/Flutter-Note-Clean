@@ -14,19 +14,16 @@ class NoteLoading extends NoteState {
   List<Object> get props => [];
 }
 
-class NoteLoaded extends NoteState {
-  NoteLoaded({required List<NoteEntity> notes});
-
-  @override
-  List<Object> get props => [];
-}
-
 class NoteFailure extends NoteState {
   @override
   List<Object> get props => [];
 }
 
-class NoteNoInternetFailure extends NoteState {
+class NoteLoaded extends NoteState {
+  final List<NoteEntity> notes;
+
+  NoteLoaded({required this.notes});
+
   @override
-  List<Object> get props => [];
+  List<Object> get props => [notes];
 }

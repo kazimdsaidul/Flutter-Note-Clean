@@ -46,9 +46,9 @@ class FirebaseRemoteDataSourceImpl extends FirebaseRemoteDataSource {
         .doc(noteEntity.uid)
         .collection(KEY_NOTES);
 
-    noteCollectionRef.doc(noteEntity.noteID).get().then((note) {
+    noteCollectionRef.doc(noteEntity.noteId).get().then((note) {
       if (note.exists) {
-        noteCollectionRef.doc(noteEntity.noteID).delete();
+        noteCollectionRef.doc(noteEntity.noteId).delete();
       }
       return;
     });
@@ -117,6 +117,6 @@ class FirebaseRemoteDataSourceImpl extends FirebaseRemoteDataSource {
     if (note.note != null) noteMap['note'] = note.note;
     if (note.time != null) noteMap['time'] = note.time;
 
-    noteCollectionRef.doc(note.noteID).update(noteMap);
+    noteCollectionRef.doc(note.noteId).update(noteMap);
   }
 }

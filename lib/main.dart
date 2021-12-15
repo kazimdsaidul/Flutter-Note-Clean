@@ -18,9 +18,6 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(
@@ -31,31 +28,29 @@ class MyApp extends StatelessWidget {
         BlocProvider<NoteCubit>(create: (_) => di.sl<NoteCubit>()),
       ],
       child: MaterialApp(
-          title: 'My Notes',
-          debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            primarySwatch: Colors.blue,
-          ),
-          initialRoute: "/",
-          onGenerateRoute: OnGenerateRouter.route,
-          routes: {
-            "/": (context) {
-              return BlocBuilder<AuthCubit, AuthState>(
-                  builder: (context, authState) {
-                if (authState is Authenticated) {
-                  return HomePage(
-                    uid: '1212',
-                  );
-                }
+        title: 'My Notes',
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(primarySwatch: Colors.deepOrange),
+        initialRoute: '/',
+        onGenerateRoute: OnGenerateRoute.route,
+        routes: {
+          "/": (context) {
+            return BlocBuilder<AuthCubit, AuthState>(
+                builder: (context, authState) {
+              if (authState is Authenticated) {
+                return HomePage(
+                  uid: authState.uid,
+                );
+              }
+              if (authState is UnAuthenticated) {
+                return SignInPage();
+              }
 
-                if (authState is UnAuthenticated) {
-                  return SignInPage();
-                }
-
-                return CircularProgressIndicator();
-              });
-            }
-          }),
+              return CircularProgressIndicator();
+            });
+          }
+        },
+      ),
     );
   }
 }
