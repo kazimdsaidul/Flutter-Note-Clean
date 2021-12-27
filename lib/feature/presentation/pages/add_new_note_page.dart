@@ -2,10 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_note_clean/feature/domain/entities/color_entity.dart';
 import 'package:flutter_note_clean/feature/domain/entities/note_entity.dart';
+import 'package:flutter_note_clean/feature/presentation/cubit/color/color_cubit.dart';
 import 'package:flutter_note_clean/feature/presentation/cubit/note/note_cubit.dart';
 import 'package:flutter_note_clean/feature/widgets/common.dart';
 import 'package:intl/intl.dart';
+
+import '../../../theme.dart';
 
 class AddNewNotePage extends StatefulWidget {
   final String uid;
@@ -25,6 +29,8 @@ class _AddNewNotePageState extends State<AddNewNotePage> {
     _noteTextController.addListener(() {
       setState(() {});
     });
+
+    BlocProvider.of<ColorCubit>(context).getColors();
     super.initState();
   }
 
@@ -50,6 +56,21 @@ class _AddNewNotePageState extends State<AddNewNotePage> {
               "${DateFormat("dd MMM hh:mm a").format(DateTime.now())} | ${_noteTextController.text.length} Characters",
               style:
                   TextStyle(fontSize: 14, color: Colors.black.withOpacity(.5)),
+            ),
+            BlocBuilder<ColorCubit, ColorState>(
+              builder: (context, state) {
+                if (state is ColorInitial) {
+                  return Container(child: Text("ColorInitial"));
+                } else if (state is ColorLoading) {
+                  return Container(child: Text("ColorLoading....."));
+                } else if (state is ColorFailure) {
+                  return Container(child: Text("ColorFailure....."));
+                } else if (state is ColorLoaded) {
+                  return _buildList(state.notes);
+                } else {
+                  return Container(child: Text("....else state....."));
+                }
+              },
             ),
             Expanded(
               child: Scrollbar(
@@ -97,5 +118,46 @@ class _AddNewNotePageState extends State<AddNewNotePage> {
     Future.delayed(Duration(seconds: 1), () {
       Navigator.pop(context);
     });
+  }
+
+  _buildList(List<ColorEntity> notes) {
+    return Container(
+      height: 44.0,
+      child: GridView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: notes.length,
+        gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+            maxCrossAxisExtent: 250,
+            childAspectRatio: 1,
+            crossAxisSpacing: 20,
+            mainAxisSpacing: 20),
+        itemBuilder: (context, index) {
+          return Center(
+              child: InkWell(
+            onTap: () {
+              setState(() {
+                // _value = !_value;
+                BlocProvider.of<ColorCubit>(context).seltedColors(index);
+              });
+            },
+            child: Container(
+              decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: HexColor.fromHex(notes[index].colorHaxcode)),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: notes[index].isSeleted
+                    ? Icon(
+                        Icons.check,
+                        size: 30.0,
+                        color: CustomColor.white,
+                      )
+                    : Container(),
+              ),
+            ),
+          ));
+        },
+      ),
+    );
   }
 }

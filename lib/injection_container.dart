@@ -9,12 +9,14 @@ import 'package:flutter_note_clean/feature/domain/use_cases/get_notes_usecase.da
 import 'package:flutter_note_clean/feature/domain/use_cases/is_sing_in_usecase.dart';
 import 'package:flutter_note_clean/feature/domain/use_cases/sign_up_usecase.dart';
 import 'package:flutter_note_clean/feature/presentation/cubit/auth/auth_cubit.dart';
+import 'package:flutter_note_clean/feature/presentation/cubit/color/color_cubit.dart';
 import 'package:flutter_note_clean/feature/presentation/cubit/note/note_cubit.dart';
 import 'package:flutter_note_clean/feature/presentation/cubit/user/user_cubit.dart';
 import 'package:get_it/get_it.dart';
 
 import 'feature/data/remote/data_sources/firebase_remote_data_source.dart';
 import 'feature/data/repositories/firbase_repogitory_impl.dart';
+import 'feature/domain/use_cases/get_color_usecase.dart';
 import 'feature/domain/use_cases/get_create_current_user_usecase.dart';
 import 'feature/domain/use_cases/sing_in_usecase.dart';
 import 'feature/domain/use_cases/sing_out_usecase.dart';
@@ -38,7 +40,13 @@ Future<void> init() async {
       getCreateCurrentUserUsecase: sl.call(),
       signInUseCase: sl.call()));
 
+  sl.registerLazySingleton<ColorCubit>(
+      () => ColorCubit(getColorUseCase: sl.call()));
+
   // useCase
+  sl.registerLazySingleton<GetColorUseCase>(
+      () => GetColorUseCase(repository: sl.call()));
+
   sl.registerLazySingleton<AddNewNoteUseCase>(
       () => AddNewNoteUseCase(repository: sl.call()));
   sl.registerLazySingleton<DeleteNoteUseCase>(

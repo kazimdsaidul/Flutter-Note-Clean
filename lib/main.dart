@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_note_clean/feature/presentation/cubit/color/color_cubit.dart';
 import 'package:flutter_note_clean/feature/presentation/pages/sing_in_page.dart';
 import 'package:flutter_note_clean/on_generate_route.dart';
 import 'package:flutter_note_clean/theme.dart';
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
             create: (_) => di.sl<AuthCubit>()..appStarted()),
         BlocProvider<UserCubit>(create: (_) => di.sl<UserCubit>()),
         BlocProvider<NoteCubit>(create: (_) => di.sl<NoteCubit>()),
+        BlocProvider<ColorCubit>(create: (_) => di.sl<ColorCubit>()),
       ],
       child: MaterialApp(
         title: 'My Notes',

@@ -1,4 +1,5 @@
 import 'package:flutter_note_clean/feature/data/remote/data_sources/firebase_remote_data_source.dart';
+import 'package:flutter_note_clean/feature/domain/entities/color_entity.dart';
 import 'package:flutter_note_clean/feature/domain/entities/note_entity.dart';
 import 'package:flutter_note_clean/feature/domain/entities/user_entity.dart';
 import 'package:flutter_note_clean/feature/domain/repositories/firebase_repository.dart';
@@ -56,5 +57,10 @@ class FirebaseRepositoryImpl extends FirebaseRepository {
   @override
   Future<void> updateNote(NoteEntity note) {
     return firebaseRemoteDataSource.updateNote(note);
+  }
+
+  @override
+  Stream<List<ColorEntity>> getColors() {
+    return firebaseRemoteDataSource.getColors();
   }
 }

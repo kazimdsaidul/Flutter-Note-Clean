@@ -10,3 +10,4 @@ class GetNotesUseCase {
     return repository.getNotes(uid);
   }
 }
+

@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter_note_clean/feature/domain/entities/color_entity.dart';
 import 'package:flutter_note_clean/feature/domain/entities/note_entity.dart';
 import 'package:flutter_note_clean/feature/domain/entities/user_entity.dart';
 
@@ -25,4 +26,6 @@ abstract class FirebaseRepository {
   Future<void> deleteNote(NoteEntity note);
 
   Stream<List<NoteEntity>> getNotes(String uid);
+
+  Stream<List<ColorEntity>> getColors();
 }

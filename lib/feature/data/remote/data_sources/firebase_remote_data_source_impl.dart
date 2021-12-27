@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_note_clean/feature/data/remote/models/note_model.dart';
 import 'package:flutter_note_clean/feature/data/remote/models/user_model.dart';
+import 'package:flutter_note_clean/feature/domain/entities/color_entity.dart';
 import 'package:flutter_note_clean/feature/domain/entities/note_entity.dart';
 import 'package:flutter_note_clean/feature/domain/entities/user_entity.dart';
 
@@ -14,8 +17,7 @@ class FirebaseRemoteDataSourceImpl extends FirebaseRemoteDataSource {
   final FirebaseAuth firebaseAuth;
   final FirebaseFirestore firebaseFirestore;
 
-  FirebaseRemoteDataSourceImpl(
-      {required this.firebaseAuth, required this.firebaseFirestore});
+  FirebaseRemoteDataSourceImpl({required this.firebaseAuth, required this.firebaseFirestore});
 
   @override
   Future<void> addNewNote(NoteEntity noteEntity) async {
@@ -28,10 +30,10 @@ class FirebaseRemoteDataSourceImpl extends FirebaseRemoteDataSource {
     noteCollectionRef.doc(noteId).get().then((note) {
       if (!note.exists) {
         final newNote = NoteModel(
-                uid: noteEntity.uid,
-                noteID: noteId,
-                note: noteEntity.note,
-                time: noteEntity.time)
+            uid: noteEntity.uid,
+            noteID: noteId,
+            note: noteEntity.note,
+            time: noteEntity.time)
             .toDocument();
         noteCollectionRef.doc(noteId).set(newNote);
       }
@@ -61,10 +63,10 @@ class FirebaseRemoteDataSourceImpl extends FirebaseRemoteDataSource {
       if (user.exists) {
         var uId = await getCurrentUId();
         final newUser = UserModel(
-                name: userEntity.name,
-                email: userEntity.email,
-                uid: uId,
-                status: userEntity.status)
+            name: userEntity.name,
+            email: userEntity.email,
+            uid: uId,
+            status: userEntity.status)
             .toDocument();
         userCollection.doc(uId).set(newUser);
       }
@@ -84,6 +86,27 @@ class FirebaseRemoteDataSourceImpl extends FirebaseRemoteDataSource {
           .map((docSnap) => NoteModel.fromSnapshot(docSnap))
           .toList();
     });
+  }
+
+  @override
+  Stream<List<ColorEntity>> getColors() {
+    final controller = StreamController<List<ColorEntity>>();
+    List<ColorEntity> data = [];
+
+    ColorEntity White = ColorEntity("White", "#FFFFFF", false);
+    data.add(White);
+
+    ColorEntity redColor = ColorEntity("Red", "#FF0000", false);
+    data.add(redColor);
+
+    ColorEntity greenColor = ColorEntity("Green", "#008000", false);
+    data.add(greenColor);
+
+    ColorEntity purple = ColorEntity("Purple", "#800080", false);
+    data.add(purple);
+
+    controller.add(data);
+    return controller.stream;
   }
 
   @override
