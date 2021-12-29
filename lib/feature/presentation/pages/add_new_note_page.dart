@@ -47,57 +47,57 @@ class _AddNewNotePageState extends State<AddNewNotePage> {
       appBar: AppBar(
         title: Text("Note"),
       ),
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              "${DateFormat("dd MMM hh:mm a").format(DateTime.now())} | ${_noteTextController.text.length} Characters",
-              style:
-                  TextStyle(fontSize: 14, color: Colors.black.withOpacity(.5)),
-            ),
-            BlocBuilder<ColorCubit, ColorState>(
-              builder: (context, state) {
-                if (state is ColorInitial) {
-                  return Container(child: Text("ColorInitial"));
-                } else if (state is ColorLoading) {
-                  return Container(child: Text("ColorLoading....."));
-                } else if (state is ColorFailure) {
-                  return Container(child: Text("ColorFailure....."));
-                } else if (state is ColorLoaded) {
-                  return _buildList(state.notes);
-                } else {
-                  return Container(child: Text("....else state....."));
-                }
-              },
-            ),
-            Expanded(
-              child: Scrollbar(
-                child: TextFormField(
-                  controller: _noteTextController,
-                  maxLines: null,
-                  decoration: InputDecoration(
-                      border: InputBorder.none, hintText: "start typing..."),
+      body: BlocBuilder<ColorCubit, ColorState>(
+        builder: (context, state) {
+          var pageBackgroundColor;
+          if (state is ColorSeleted) {
+            pageBackgroundColor = HexColor.fromHex(state.note.colorHaxcode);
+          } else {
+            pageBackgroundColor = Colors.white;
+          }
+
+          return Container(
+            color: pageBackgroundColor,
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "${DateFormat("dd MMM hh:mm a").format(DateTime.now())} | ${_noteTextController.text.length} Characters",
+                  style: TextStyle(
+                      fontSize: 14, color: Colors.black.withOpacity(.5)),
                 ),
-              ),
-            ),
-            InkWell(
-              onTap: _submitNewNote,
-              child: Container(
-                height: 45,
-                width: double.infinity,
-                alignment: Alignment.center,
-                decoration: BoxDecoration(
-                    color: Colors.blue, borderRadius: BorderRadius.circular(8)),
-                child: Text(
-                  "Save",
-                  style: TextStyle(fontSize: 18, color: Colors.white),
+                _build_color_section(state),
+                Expanded(
+                  child: Scrollbar(
+                    child: TextFormField(
+                      controller: _noteTextController,
+                      maxLines: null,
+                      decoration: InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "start typing..."),
+                    ),
+                  ),
                 ),
-              ),
-            )
-          ],
-        ),
+                InkWell(
+                  onTap: _submitNewNote,
+                  child: Container(
+                    height: 45,
+                    width: double.infinity,
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                        color: Colors.blue,
+                        borderRadius: BorderRadius.circular(8)),
+                    child: Text(
+                      "Save",
+                      style: TextStyle(fontSize: 18, color: Colors.white),
+                    ),
+                  ),
+                )
+              ],
+            ),
+          );
+        },
       ),
     );
   }
@@ -120,7 +120,23 @@ class _AddNewNotePageState extends State<AddNewNotePage> {
     });
   }
 
-  _buildList(List<ColorEntity> notes) {
+  _build_color_section(ColorState state) {
+    if (state is ColorInitial) {
+      return Container(child: Text("ColorInitial"));
+    } else if (state is ColorLoading) {
+      return Container(child: Text("ColorLoading....."));
+    } else if (state is ColorFailure) {
+      return Container(child: Text("ColorFailure....."));
+    } else if (state is ColorLoaded) {
+      return buildList(state.notes);
+    } else if (state is ColorSeleted) {
+      return buildList(state.notes);
+    } else {
+      return Container(child: Text("....else state....."));
+    }
+  }
+
+  buildList(List<ColorEntity> notes) {
     return Container(
       height: 44.0,
       child: GridView.builder(

@@ -29,9 +29,10 @@ class ColorLoaded extends ColorState {
 }
 
 class ColorSeleted extends ColorState {
-  final ColorEntity notes;
+  final ColorEntity note;
+  final List<ColorEntity> notes;
 
-  ColorSeleted(this.notes);
+  ColorSeleted({required this.note, required this.notes});
 
   @override
   List<Object> get props => [notes];

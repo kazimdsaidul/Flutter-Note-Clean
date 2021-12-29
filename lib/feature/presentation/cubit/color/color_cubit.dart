@@ -43,6 +43,6 @@ class ColorCubit extends Cubit<ColorState> {
     _tempColorData[index] = _selectedItem;
     emit(ColorLoaded(notes: _tempColorData));
 
-    // emit(ColorSeleted(_selectedItem));
+    emit(ColorSeleted(note: _selectedItem, notes: _tempColorData));
   }
 }
