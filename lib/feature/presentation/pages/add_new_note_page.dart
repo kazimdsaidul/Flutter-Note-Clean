@@ -23,6 +23,7 @@ class AddNewNotePage extends StatefulWidget {
 class _AddNewNotePageState extends State<AddNewNotePage> {
   TextEditingController _noteTextController = TextEditingController();
   GlobalKey<ScaffoldState> _scaffoldStateKey = GlobalKey<ScaffoldState>();
+  ColorEntity? colorEntity;
 
   @override
   void initState() {
@@ -107,8 +108,10 @@ class _AddNewNotePageState extends State<AddNewNotePage> {
       snackBarError(scaffoldState: _scaffoldStateKey, msg: "type something");
       return;
     }
+
     BlocProvider.of<NoteCubit>(context).addNote(
       note: NoteEntity(
+        colorEntity: colorEntity,
         note: _noteTextController.text,
         time: Timestamp.now(),
         uid: widget.uid,
@@ -128,8 +131,10 @@ class _AddNewNotePageState extends State<AddNewNotePage> {
     } else if (state is ColorFailure) {
       return Container(child: Text("ColorFailure....."));
     } else if (state is ColorLoaded) {
+      colorEntity = state.note;
       return buildList(state.notes);
     } else if (state is ColorSeleted) {
+      colorEntity = state.note;
       return buildList(state.notes);
     } else {
       return Container(child: Text("....else state....."));

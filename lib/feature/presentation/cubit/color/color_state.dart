@@ -21,8 +21,9 @@ class ColorFailure extends ColorState {
 
 class ColorLoaded extends ColorState {
   final List<ColorEntity> notes;
+  final ColorEntity note;
 
-  ColorLoaded({required this.notes});
+  ColorLoaded({required this.note, required this.notes});
 
   @override
   List<Object> get props => [notes];

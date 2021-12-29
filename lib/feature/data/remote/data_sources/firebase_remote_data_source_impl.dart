@@ -17,7 +17,8 @@ class FirebaseRemoteDataSourceImpl extends FirebaseRemoteDataSource {
   final FirebaseAuth firebaseAuth;
   final FirebaseFirestore firebaseFirestore;
 
-  FirebaseRemoteDataSourceImpl({required this.firebaseAuth, required this.firebaseFirestore});
+  FirebaseRemoteDataSourceImpl(
+      {required this.firebaseAuth, required this.firebaseFirestore});
 
   @override
   Future<void> addNewNote(NoteEntity noteEntity) async {
@@ -30,10 +31,11 @@ class FirebaseRemoteDataSourceImpl extends FirebaseRemoteDataSource {
     noteCollectionRef.doc(noteId).get().then((note) {
       if (!note.exists) {
         final newNote = NoteModel(
-            uid: noteEntity.uid,
-            noteID: noteId,
-            note: noteEntity.note,
-            time: noteEntity.time)
+                uid: noteEntity.uid,
+                noteID: noteId,
+                note: noteEntity.note,
+                time: noteEntity.time,
+                colorEntity: noteEntity.colorEntity)
             .toDocument();
         noteCollectionRef.doc(noteId).set(newNote);
       }
@@ -63,10 +65,10 @@ class FirebaseRemoteDataSourceImpl extends FirebaseRemoteDataSource {
       if (user.exists) {
         var uId = await getCurrentUId();
         final newUser = UserModel(
-            name: userEntity.name,
-            email: userEntity.email,
-            uid: uId,
-            status: userEntity.status)
+                name: userEntity.name,
+                email: userEntity.email,
+                uid: uId,
+                status: userEntity.status)
             .toDocument();
         userCollection.doc(uId).set(newUser);
       }
@@ -93,7 +95,7 @@ class FirebaseRemoteDataSourceImpl extends FirebaseRemoteDataSource {
     final controller = StreamController<List<ColorEntity>>();
     List<ColorEntity> data = [];
 
-    ColorEntity White = ColorEntity("White", "#FFFFFF", false);
+    ColorEntity White = ColorEntity("White", "#FFFFFF", true);
     data.add(White);
 
     ColorEntity redColor = ColorEntity("Red", "#FF0000", false);

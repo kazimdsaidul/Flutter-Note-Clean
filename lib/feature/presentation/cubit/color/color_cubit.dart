@@ -18,7 +18,7 @@ class ColorCubit extends Cubit<ColorState> {
     try {
       getColorUseCase.call().listen((notes) {
         _tempColorData = notes;
-        emit(ColorLoaded(notes: notes));
+        emit(ColorLoaded(notes: notes, note: notes[0]));
       });
     } on SocketException catch (_) {
       emit(ColorFailure());
@@ -41,7 +41,7 @@ class ColorCubit extends Cubit<ColorState> {
     }
 
     _tempColorData[index] = _selectedItem;
-    emit(ColorLoaded(notes: _tempColorData));
+    emit(ColorLoaded(notes: _tempColorData, note: _selectedItem));
 
     emit(ColorSeleted(note: _selectedItem, notes: _tempColorData));
   }
